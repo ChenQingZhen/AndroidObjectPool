@@ -3,6 +3,8 @@ package com.cqz.androidobjectpool;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.cqz.androidobjectpool.adapter.MemberListAdapter;
@@ -13,6 +15,9 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private ListView lvMember;
+    private MemberListAdapter mAdapter;
+
+    private boolean isRefresh;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,7 +32,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void initView() {
      lvMember= (ListView) findViewById(R.id.lv_member);
-
+        Button btnAdd= (Button) findViewById(R.id.btn_add);
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isRefresh=false;
+                initData();
+            }
+        });
+    Button btnRefresh= (Button) findViewById(R.id.btn_refresh);
+        btnRefresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                isRefresh=true;
+                initData();
+            }
+        });
     }
      class GetDataAsyncTask extends AsyncTask<Void,Void,List<UserBean>>{
 
@@ -39,8 +59,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<UserBean> userBeen) {
             super.onPostExecute(userBeen);
-            lvMember.setAdapter(new MemberListAdapter(MainActivity.this,userBeen));
-        }
+            if(mAdapter==null) {
+                mAdapter = new MemberListAdapter(MainActivity.this, userBeen);
+                lvMember.setAdapter(mAdapter);
+            }else{
+                if(isRefresh){
+                    mAdapter.clear();
+                }
+                mAdapter.addAll(userBeen);
+                mAdapter.notifyDataSetChanged();
+            }
+            }
     }
 
 }

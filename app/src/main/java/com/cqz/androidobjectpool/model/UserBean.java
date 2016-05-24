@@ -21,6 +21,7 @@ public class UserBean {
     public void recycle(){
         this.setType("被释放的");
         sPool.release(this);
+
     }
 
 

@@ -23,6 +23,14 @@ public class MemberListAdapter extends BaseAdapter{
         mContext=context;
         mUserList = userList;
     }
+    public void clear(){
+       for(int i=mUserList.size()-1;i>=0;i--){
+           mUserList.remove(i).recycle();
+       }
+    }
+    public void addAll(List<UserBean> userList){
+        mUserList.addAll(userList);
+    }
 
     @Override
     public int getCount() {
