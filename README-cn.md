@@ -7,4 +7,4 @@ Android官网的最佳实践（best praties）中的对象池使用，实现方�
 用法二：重复使用对象，对象使用后用recycle()回收对象存到对象池，然后再用obtain()方法获取对象。<br/>
 具体步骤：<br/>
 1、刷新列表的时候，遍历列表数据源，将每个对象回收放到对象池。MemberListAdapter里面的clear()正式实现了这个逻辑。<br/>
-2、用obtain()方法从数据源获取数据<br/>
+2、用obtain()方法从数据源获取数据。<br/>
